@@ -1,7 +1,7 @@
 ﻿<template>
   <header class="sticky-top shadow">
     <!-- Barra principal -->
-    <nav class="navbar navbar-expand-lg navbar-dark py-0" style="background-color: #2b1a0e;">
+    <nav class="navbar navbar-expand-lg navbar-dark py-0" style="background-color: #230f09;">
       <div class="container">
         <NuxtLink to="/" class="navbar-brand d-flex align-items-center gap-2">
           <img src="/logo.png" alt="Librería Alune" style="height:100px;width:100px;object-fit:contain" />
@@ -281,7 +281,7 @@ function search() {
 
 <style scoped>
 .category-bar {
-  background-color: #3d2610;
+  background-color: #2e1309;
 }
 
 .category-link {
