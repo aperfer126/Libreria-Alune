@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `Book` ADD COLUMN `binding` VARCHAR(191) NULL,
+    ADD COLUMN `pages` INTEGER NULL,
+    ADD COLUMN `publisher` VARCHAR(191) NULL;
