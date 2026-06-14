@@ -112,6 +112,7 @@
                 {{ session?.user?.name }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
+                <li><NuxtLink to="/mi-perfil" class="dropdown-item">Mi perfil</NuxtLink></li>
                 <li><NuxtLink to="/favoritos" class="dropdown-item">Mis favoritos</NuxtLink></li>
                 <li><NuxtLink to="/mis-pedidos" class="dropdown-item">Mis pedidos</NuxtLink></li>
                 <li><hr class="dropdown-divider" /></li>
