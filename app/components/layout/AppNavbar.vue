@@ -1,7 +1,7 @@
 ﻿<template>
   <header class="sticky-top shadow">
     <!-- Barra principal -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-0">
+    <nav class="navbar navbar-expand-lg navbar-dark py-0" style="background-color: #2b1a0e;">
       <div class="container">
         <NuxtLink to="/" class="navbar-brand d-flex align-items-center gap-2">
           <img src="/logo.png" alt="Librería Alune" style="height:100px;width:100px;object-fit:contain" />
@@ -281,7 +281,7 @@ function search() {
 
 <style scoped>
 .category-bar {
-  background-color: #c0392b;
+  background-color: #3d2610;
 }
 
 .category-link {
@@ -312,8 +312,8 @@ function search() {
 }
 
 .genre-item:hover {
-  background-color: #fdf0ef;
-  color: #c0392b;
+  background-color: #fdf5e8;
+  color: #e8a020;
 }
 
 /* Redes sociales */
