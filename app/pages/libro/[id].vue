@@ -78,12 +78,12 @@
               <div class="mb-1 text-muted small">Precio</div>
               <div class="fs-1 fw-bold text-primary mb-1">{{ formatPrice(book.price) }}</div>
               <div class="mb-4">
-                <span v-if="book.stock > 0" class="text-success small fw-semibold">✓ En stock ({{ book.stock }} uds.)</span>
+                <span v-if="book.stock > 0" class="text-success small fw-semibold">✓ En stock</span>
                 <span v-else class="text-danger small fw-semibold">✗ Agotado</span>
               </div>
 
-              <!-- Selector de cantidad -->
-              <div class="input-group input-group-sm mb-3">
+              <!-- Selector de cantidad (solo si hay stock) -->
+              <div v-if="book.stock > 0" class="input-group input-group-sm mb-3">
                 <button class="btn btn-outline-secondary" type="button" @click="qty > 1 && qty--">−</button>
                 <input v-model.number="qty" type="number" class="form-control text-center" min="1" :max="book.stock" />
                 <button class="btn btn-outline-secondary" type="button" @click="qty < book.stock && qty++">+</button>
@@ -91,12 +91,29 @@
 
               <!-- Añadir al carrito -->
               <button
+                v-if="book.stock > 0"
                 class="btn btn-primary w-100 mb-2"
-                :disabled="book.stock === 0"
                 @click="addToCart"
               >
                 🛒 Añadir al carrito
               </button>
+
+              <!-- Reservar (sin stock) -->
+              <template v-else>
+                <button
+                  class="btn btn-outline-warning w-100 mb-2"
+                  :disabled="reservationDone || reserving"
+                  @click="reserve"
+                >
+                  <span v-if="reserving" class="spinner-border spinner-border-sm me-2"></span>
+                  {{ reservationDone ? '✓ Reserva confirmada' : '📋 Reservar' }}
+                </button>
+                <p class="text-muted small mb-2 text-center">
+                  {{ reservationDone
+                    ? 'Te avisaremos cuando vuelva a estar disponible.'
+                    : 'Sin stock. Resérvalo y te avisaremos cuando llegue.' }}
+                </p>
+              </template>
 
               <!-- Favorito -->
               <button
@@ -250,6 +267,29 @@ async function toggleFav() {
     return
   }
   await favStore.toggle(book.value.id)
+}
+
+const reserving = ref(false)
+const reservationDone = ref(false)
+
+async function reserve() {
+  if (status.value !== 'authenticated') {
+    router.push(`/auth/login?callbackUrl=${encodeURIComponent(route.fullPath)}`)
+    return
+  }
+  reserving.value = true
+  try {
+    const res = await $fetch<{ alreadyReserved?: boolean; message: string }>('/api/reservations', {
+      method: 'POST',
+      body: { bookId: book.value.id },
+    })
+    reservationDone.value = true
+    showToast(res.alreadyReserved ? 'Ya tenías este libro reservado' : 'Reserva confirmada. Te avisaremos cuando esté disponible.')
+  } catch {
+    showToast('No se pudo completar la reserva. Inténtalo de nuevo.')
+  } finally {
+    reserving.value = false
+  }
 }
 </script>
 

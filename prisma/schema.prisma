@@ -13,9 +13,10 @@ model User {
   password  String
   name      String
   role      Role       @default(USER)
-  orders    Order[]
-  favorites Favorite[]
-  createdAt DateTime   @default(now())
+  orders       Order[]
+  favorites    Favorite[]
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
 }
 
 enum Role {
@@ -31,22 +32,23 @@ model Genre {
 }
 
 model Book {
-  id            Int         @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   title         String
   author        String
-  isbn          String?     @unique
-  price         Decimal     @db.Decimal(10, 2)
-  stock         Int         @default(0)
+  isbn          String?       @unique
+  price         Decimal       @db.Decimal(10, 2)
+  stock         Int           @default(0)
   coverUrl      String?
-  description   String?     @db.Text
+  description   String?       @db.Text
   genres        Genre[]
   publishedAt   DateTime?
   publisher     String?
   pages         Int?
   binding       String?
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime      @default(now())
   orderItems    OrderItem[]
   favorites     Favorite[]
+  reservations  Reservation[]
 }
 
 model Favorite {
@@ -86,4 +88,15 @@ model OrderItem {
   bookId   Int
   quantity Int
   price    Decimal @db.Decimal(10, 2)
+}
+
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, bookId])
 }
