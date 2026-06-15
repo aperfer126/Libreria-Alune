@@ -63,6 +63,7 @@
               <div class="chart-card-body">
                 <ClientOnly>
                   <Line v-if="revenueChartData" :data="revenueChartData" :options="lineOptions" />
+                  <p v-else class="text-center text-muted small py-4 mb-0">Sin datos de ventas aún</p>
                 </ClientOnly>
               </div>
             </div>
@@ -77,6 +78,7 @@
               <div class="chart-card-body d-flex align-items-center justify-content-center">
                 <ClientOnly>
                   <Doughnut v-if="statusChartData" :data="statusChartData" :options="doughnutOptions" style="max-height:220px" />
+                  <p v-else class="text-center text-muted small py-4 mb-0">Sin pedidos aún</p>
                 </ClientOnly>
               </div>
             </div>
@@ -95,6 +97,7 @@
               <div class="chart-card-body">
                 <ClientOnly>
                   <Bar v-if="ordersChartData" :data="ordersChartData" :options="barOptions" />
+                  <p v-else class="text-center text-muted small py-4 mb-0">Sin pedidos aún</p>
                 </ClientOnly>
               </div>
             </div>
@@ -109,6 +112,7 @@
               <div class="chart-card-body">
                 <ClientOnly>
                   <Bar v-if="genreChartData" :data="genreChartData" :options="barOptionsEur" />
+                  <p v-else class="text-center text-muted small py-4 mb-0">Sin ventas registradas aún</p>
                 </ClientOnly>
               </div>
             </div>
@@ -127,6 +131,7 @@
               <div class="chart-card-body">
                 <ClientOnly>
                   <Bar v-if="topBooksChartData" :data="topBooksChartData" :options="barOptionsHorizontal" />
+                  <p v-else class="text-center text-muted small py-4 mb-0">Sin ventas registradas aún</p>
                 </ClientOnly>
               </div>
             </div>

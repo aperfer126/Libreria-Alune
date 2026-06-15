@@ -226,8 +226,6 @@ const addr = reactive({
 let stripe: Stripe | null = null
 let elements: StripeElements | null = null
 let cardNumberEl: StripeCardNumberElement | null = null
-let clientSecretRef = ''
-let currentOrderId: number | null = null
 
 function formatPrice(price: number) {
   return price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })
@@ -240,24 +238,6 @@ async function initStripe() {
   paymentError.value = ''
 
   try {
-    const shippingAddress = JSON.stringify({
-      name: addr.name, surname: addr.surname, email: addr.email,
-      phone: addr.phone, line1: addr.line1, line2: addr.line2,
-      city: addr.city, postalCode: addr.postalCode, country: addr.country,
-    })
-
-    const { clientSecret, orderId } = await $fetch<{ clientSecret: string; orderId: number }>('/api/orders', {
-      method: 'POST',
-      body: {
-        items: cart.items.map(i => ({ bookId: i.bookId, quantity: i.quantity })),
-        shippingAddress,
-        customerEmail: addr.email,
-      },
-    })
-
-    currentOrderId = orderId
-    clientSecretRef = clientSecret
-
     stripe = await loadStripe(config.public.stripePublicKey as string)
     if (!stripe) throw new Error('No se pudo cargar Stripe')
 
@@ -287,38 +267,59 @@ async function initStripe() {
 }
 
 async function handleSubmit() {
-  if (!stripe || !cardNumberEl || !clientSecretRef) return
+  if (!stripe || !cardNumberEl) return
 
   paying.value = true
   paymentError.value = ''
 
-  const baseUrl = window.location.origin
+  try {
+    // Crear pedido y PaymentIntent con la dirección ya rellenada por el usuario
+    const shippingAddress = JSON.stringify({
+      name: addr.name, surname: addr.surname, email: addr.email,
+      phone: addr.phone, line1: addr.line1, line2: addr.line2,
+      city: addr.city, postalCode: addr.postalCode, country: addr.country,
+    })
 
-  const { error } = await stripe.confirmCardPayment(clientSecretRef, {
-    payment_method: {
-      card: cardNumberEl,
-      billing_details: {
-        name: `${addr.name} ${addr.surname}`.trim(),
-        email: addr.email,
-        phone: addr.phone || undefined,
-        address: {
-          line1: addr.line1,
-          line2: addr.line2 || undefined,
-          city: addr.city,
-          postal_code: addr.postalCode,
-          country: addr.country,
+    const { clientSecret, orderId } = await $fetch<{ clientSecret: string; orderId: number }>('/api/orders', {
+      method: 'POST',
+      body: {
+        items: cart.items.map(i => ({ bookId: i.bookId, quantity: i.quantity })),
+        shippingAddress,
+        customerEmail: addr.email,
+      },
+    })
+
+    const baseUrl = window.location.origin
+
+    const { error } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardNumberEl,
+        billing_details: {
+          name: `${addr.name} ${addr.surname}`.trim(),
+          email: addr.email,
+          phone: addr.phone || undefined,
+          address: {
+            line1: addr.line1,
+            line2: addr.line2 || undefined,
+            city: addr.city,
+            postal_code: addr.postalCode,
+            country: addr.country,
+          },
         },
       },
-    },
-    return_url: `${baseUrl}/checkout/return`,
-  })
+      return_url: `${baseUrl}/checkout/return`,
+    })
 
-  if (error) {
-    paymentError.value = error.message ?? 'El pago ha fallado. Inténtalo de nuevo.'
+    if (error) {
+      paymentError.value = error.message ?? 'El pago ha fallado. Inténtalo de nuevo.'
+      paying.value = false
+    } else {
+      cart.clear()
+      router.push(`/checkout/return?success=1&order=${orderId}`)
+    }
+  } catch (e: any) {
+    paymentError.value = e.data?.statusMessage || e.message || 'Error al procesar el pago'
     paying.value = false
-  } else {
-    cart.clear()
-    router.push(`/checkout/return?success=1&order=${currentOrderId}`)
   }
 }
 

@@ -30,9 +30,10 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  // Libros más vendidos (top 5)
+  // Libros más vendidos (top 5) — solo pedidos PAID
   const topBooks = await prisma.orderItem.groupBy({
     by: ['bookId'],
+    where: { order: { status: 'PAID' } },
     _sum: { quantity: true },
     orderBy: { _sum: { quantity: 'desc' } },
     take: 5,
@@ -48,8 +49,9 @@ export default defineEventHandler(async (event) => {
     quantity: b._sum.quantity ?? 0,
   }))
 
-  // Ventas por género
+  // Ventas por género — solo pedidos PAID
   const itemsByGenre = await prisma.orderItem.findMany({
+    where: { order: { status: 'PAID' } },
     include: { book: { include: { genres: true } } },
   })
   const genreSales: Record<string, number> = {}
