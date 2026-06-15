@@ -82,7 +82,7 @@
                 <div class="card shadow-sm">
                   <div class="card-header fw-semibold">🚚 Dirección de envío</div>
                   <div class="card-body">
-                    <p v-if="order.shippingAddress" class="mb-0" style="white-space: pre-line">{{ formatShippingAddress(order.shippingAddress) }}</p>
+                    <p v-if="formatShippingAddress(order.shippingAddress)" class="mb-0" style="white-space: pre-line">{{ formatShippingAddress(order.shippingAddress) }}</p>
                     <p v-else class="mb-0 text-muted small fst-italic">Sin dirección registrada</p>
                   </div>
                 </div>

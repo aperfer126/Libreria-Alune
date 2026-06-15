@@ -66,7 +66,7 @@
           <div class="row align-items-start g-2">
             <div class="col-md-7">
               <p class="mb-1 small fw-semibold text-muted">🚚 Dirección de envío</p>
-              <p v-if="order.shippingAddress" class="mb-0 small" style="white-space: pre-line">{{ formatShippingAddress(order.shippingAddress) }}</p>
+              <p v-if="formatShippingAddress(order.shippingAddress)" class="mb-0 small" style="white-space: pre-line">{{ formatShippingAddress(order.shippingAddress) }}</p>
               <p v-else class="mb-0 small text-muted fst-italic">Sin dirección registrada</p>
             </div>
             <div class="col-md-5 text-md-end">

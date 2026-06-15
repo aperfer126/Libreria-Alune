@@ -116,7 +116,7 @@ async function main() {
   const orders = [
     {
       userId: user1.id, status: 'PAID' as const,
-      createdAt: new Date('2025-01-15'),
+      createdAt: daysAgo(330),
       shippingAddress: addrMadrid,
       items: [
         { isbn: '9788467901234', qty: 2, price: 8.95 },
@@ -124,8 +124,8 @@ async function main() {
       ],
     },
     {
-      userId: user1.id, status: 'PENDING' as const,
-      createdAt: new Date('2025-03-22'),
+      userId: user1.id, status: 'PAID' as const,
+      createdAt: daysAgo(270),
       shippingAddress: addrMadrid,
       items: [
         { isbn: '9788497595858', qty: 1, price: 20.95 },
@@ -133,8 +133,8 @@ async function main() {
       ],
     },
     {
-      userId: user1.id, status: 'CANCELLED' as const,
-      createdAt: new Date('2025-04-18'),
+      userId: user1.id, status: 'PAID' as const,
+      createdAt: daysAgo(200),
       shippingAddress: addrMadrid,
       items: [
         { isbn: '9788427200449', qty: 2, price: 17.50 },
@@ -142,7 +142,7 @@ async function main() {
     },
     {
       userId: user2.id, status: 'PAID' as const,
-      createdAt: new Date('2025-02-08'),
+      createdAt: daysAgo(300),
       shippingAddress: addrSevilla,
       items: [
         { isbn: '9788408107842', qty: 1, price: 12.90 },
@@ -152,7 +152,7 @@ async function main() {
     },
     {
       userId: user2.id, status: 'CANCELLED' as const,
-      createdAt: new Date('2025-02-20'),
+      createdAt: daysAgo(240),
       shippingAddress: addrSevilla,
       items: [
         { isbn: '9788445000526', qty: 1, price: 24.90 },
@@ -160,7 +160,7 @@ async function main() {
     },
     {
       userId: user3.id, status: 'PAID' as const,
-      createdAt: new Date('2025-04-03'),
+      createdAt: daysAgo(150),
       shippingAddress: addrBarcelona,
       items: [
         { isbn: '9788420674650', qty: 2, price: 11.50 },
@@ -169,7 +169,7 @@ async function main() {
     },
     {
       userId: user3.id, status: 'PENDING' as const,
-      createdAt: new Date('2025-05-10'),
+      createdAt: daysAgo(80),
       shippingAddress: addrBarcelona,
       items: [
         { isbn: '9788401352782', qty: 1, price: 22.95 },
@@ -179,11 +179,37 @@ async function main() {
     },
     {
       userId: admin.id, status: 'PAID' as const,
-      createdAt: new Date('2025-03-01'),
+      createdAt: daysAgo(45),
       shippingAddress: addrBilbao,
       items: [
         { isbn: '9788445077832', qty: 1, price: 23.90 },
         { isbn: '9788408163435', qty: 1, price: 18.50 },
+      ],
+    },
+    {
+      userId: user2.id, status: 'PAID' as const,
+      createdAt: daysAgo(120),
+      shippingAddress: addrSevilla,
+      items: [
+        { isbn: '9788401352812', qty: 1, price: 17.95 },
+        { isbn: '9788445001394', qty: 1, price: 18.90 },
+      ],
+    },
+    {
+      userId: user1.id, status: 'PAID' as const,
+      createdAt: daysAgo(30),
+      shippingAddress: addrMadrid,
+      items: [
+        { isbn: '9788478884469', qty: 1, price: 19.95 },
+        { isbn: '9788478884476', qty: 1, price: 19.95 },
+      ],
+    },
+    {
+      userId: user3.id, status: 'PAID' as const,
+      createdAt: daysAgo(10),
+      shippingAddress: addrBarcelona,
+      items: [
+        { isbn: '9788401352829', qty: 1, price: 19.50 },
       ],
     },
   ]
