@@ -4,6 +4,7 @@
     <NuxtLink to="/admin/libros" class="list-group-item list-group-item-action" active-class="fw-semibold">📚 Libros</NuxtLink>
     <NuxtLink to="/admin/generos" class="list-group-item list-group-item-action" active-class="fw-semibold">🏷️ Géneros</NuxtLink>
     <NuxtLink to="/admin/pedidos" class="list-group-item list-group-item-action" active-class="fw-semibold">📦 Pedidos</NuxtLink>
+    <NuxtLink to="/admin/reservas" class="list-group-item list-group-item-action" active-class="fw-semibold">📋 Reservas</NuxtLink>
     <NuxtLink v-if="isAdmin" to="/admin/usuarios" class="list-group-item list-group-item-action" active-class="fw-semibold">👥 Usuarios</NuxtLink>
   </div>
 </template>
